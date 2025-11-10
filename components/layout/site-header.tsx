@@ -4,14 +4,14 @@ import icon from "@/public/Mask Group.png";
 
 export default function SiteHeader() {
   return (
-    <header className="mx-auto min-h-16 w-full max-w-6xl py-5">
-      <div className="flex items-center justify-between">
+    <header className="mx-auto flex min-h-16 w-full max-w-5xl items-center font-sans">
+      <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-1">
           <Image alt="icon" height={16} src={icon} width={16} />
           <Image alt="icon" height={16} src={iconLogo} width={100} />
         </div>
         <button
-          className="rounded-[14px] bg-[#FF9A0E] px-6 py-3 text-white"
+          className="rounded-lg bg-[#FF9A0E] px-4 py-1 font-medium text-sm text-white shadow-[0_20px_40px_rgba(255,174,0,0.29),0_5px_10px_rgba(255,174,0,0.26)]"
           type="button"
         >
           Add meal
