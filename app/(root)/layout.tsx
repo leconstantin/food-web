@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/layout/site-footer";
 import SiteHeader from "@/components/layout/site-header";
 
 export default function AppLayout(props: LayoutProps<"/">) {
@@ -7,6 +8,7 @@ export default function AppLayout(props: LayoutProps<"/">) {
       <main className="container-wrapper flex min-h-screen flex-1 flex-col bg-muted/10">
         {props.children}
       </main>
+      <SiteFooter />
     </div>
   );
 }
