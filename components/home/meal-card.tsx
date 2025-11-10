@@ -4,6 +4,7 @@ import type { Meal } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import star from "@/public/card/star.png";
 import tag from "@/public/card/tag.png";
+import { SecondaryButton } from "../ui/buttons";
 
 export default function MealCard({ meal }: { meal: Meal }) {
   const isValidSrc = (value: unknown): value is string =>
@@ -70,9 +71,9 @@ export default function MealCard({ meal }: { meal: Meal }) {
       </div>
       {/* open or closed btn */}
       <div className="mt-auto flex">
-        <Button type={meal.open ? "open" : "closed"}>
+        <SecondaryButton type={meal.open ? "open" : "closed"}>
           {meal.open ? "Open" : "closed"}
-        </Button>
+        </SecondaryButton>
       </div>
     </div>
   );
@@ -95,30 +96,6 @@ function Badge({
     >
       <Image alt="food image" className="size-4 object-cover" src={tag} />
 
-      {children}
-    </div>
-  );
-}
-
-function Button({
-  className,
-  children,
-  type,
-}: {
-  className?: string;
-  children: React.ReactNode;
-  type: "open" | "closed";
-}) {
-  return (
-    <div
-      className={cn(
-        "flex w-fit items-center gap-2 rounded-lg bg-[#F17228] px-3 py-1 font-semibold text-sm text-white",
-        type === "closed"
-          ? "bg-[#F1722833] text-[#F17228]"
-          : "bg-[#79B93C33] text-[#79B93C]",
-        className
-      )}
-    >
       {children}
     </div>
   );

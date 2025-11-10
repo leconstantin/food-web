@@ -1,4 +1,5 @@
 import { Facebook, Heart, Instagram, MailIcon, Twitter } from "lucide-react";
+import Button from "../ui/buttons";
 
 const footerLinks = [
   {
@@ -82,12 +83,8 @@ export function SiteFooter() {
                   type="text"
                 />
               </div>
-              <button
-                className="rounded-lg bg-[#FF9A0E] px-4 py-1 font-medium text-sm text-white shadow-[0_20px_40px_rgba(255,174,0,0.29),0_5px_10px_rgba(255,174,0,0.26)]"
-                type="button"
-              >
-                Subscribe
-              </button>
+
+              <Button>Subscribe</Button>
             </form>
           </div>
         </div>
