@@ -7,17 +7,47 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.prod.website-files.com",
+      },
+      {
+        protocol: "https",
         hostname: "picsum.photos",
-        port: "",
-        pathname: "/seed/**",
-        search: "",
       },
       {
         protocol: "https",
         hostname: "cdn.jsdelivr.net",
-        port: "",
-        pathname: "/gh/**",
-        search: "",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "logos-world.net",
+      },
+      {
+        protocol: "https",
+        hostname: "foodwagen.netlify.app",
+      },
+      {
+        protocol: "https",
+        hostname: "foodwagenwe.netlify.app",
+      },
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+      },
+      {
+        protocol: "https",
+        hostname: "example.com",
       },
     ],
   },

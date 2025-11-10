@@ -1,20 +1,20 @@
 import { EllipsisVerticalIcon } from "lucide-react";
 import Image from "next/image";
-import type { TMeal } from "@/lib/types";
+import type { Meal } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import foodImg from "@/public/card/food-1.png";
-import foodLogo from "@/public/card/logo.png";
 import star from "@/public/card/star.png";
 import tag from "@/public/card/tag.png";
 
-export default function MealCard({ meal }: { meal: TMeal }) {
+export default function MealCard({ meal }: { meal: Meal }) {
   return (
     <div className="flex flex-col gap-4">
-      <div className="relative overflow-hidden rounded-lg bg-red-500">
+      <div className="relative overflow-hidden rounded-lg bg-gray-50">
         <Image
-          alt="food image"
+          alt={meal.food_name}
           className="rounded-lg object-cover"
-          src={foodImg}
+          height={203}
+          src={meal.food_image}
+          width={244}
         />
         <Badge className="absolute top-3 left-3">$2.99</Badge>
       </div>
@@ -23,18 +23,20 @@ export default function MealCard({ meal }: { meal: TMeal }) {
           <Image
             alt="food image"
             className="size-12 rounded-lg object-cover"
-            src={foodLogo}
+            height={48}
+            src={meal.restaurant_image}
+            width={48}
           />
         </div>
         <div>
-          <p className="font-semibold">{meal.name}</p>
+          <p className="line-clamp-1 font-semibold text-sm">{meal.food_name}</p>
           <div className="flex items-center gap-1 text-[#FFB30E] text-sm">
             <Image
               alt="food image"
               className="size-4 object-cover"
               src={star}
             />
-            4.6
+            {meal.food_rating}
           </div>
         </div>
         <div className="ml-auto flex">
@@ -42,9 +44,10 @@ export default function MealCard({ meal }: { meal: TMeal }) {
         </div>
       </div>
 
-      <div>
-        <Button type="closed">{meal.}</Button>
-        <Button type="open">Open</Button>
+      <div className="mt-auto flex">
+        <Button type={meal.open ? "open" : "closed"}>
+          {meal.open ? "Open" : "closed"}
+        </Button>
       </div>
     </div>
   );
