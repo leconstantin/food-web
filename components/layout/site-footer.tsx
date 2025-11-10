@@ -98,7 +98,7 @@ export function SiteFooter() {
           </p>
           <div className="flex items-center gap-1 text-gray-400 text-sm">
             Made with <Heart className="fill-red-500 text-red-500" size={16} />{" "}
-            by Themewagon
+            by Leo Constantin
           </div>
         </div>
       </div>
