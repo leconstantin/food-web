@@ -1,4 +1,5 @@
 import { Facebook, Heart, Instagram, MailIcon, Twitter } from "lucide-react";
+import { siteConfig } from "@/config/site";
 import Button from "../ui/buttons";
 
 const footerLinks = [
@@ -94,7 +95,7 @@ export function SiteFooter() {
       <div className="border-gray-800 border-t">
         <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 px-6 py-6 md:flex-row">
           <p className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} Your Company. All rights reserved.
+            © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
           <div className="flex items-center gap-1 text-gray-400 text-sm">
             Made with <Heart className="fill-red-500 text-red-500" size={16} />{" "}

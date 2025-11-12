@@ -1,7 +1,7 @@
 "use client";
 import { EllipsisVerticalIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import type { Meal } from "@/lib/types";
+import type { Meal, MealFormData } from "@/lib/types";
 import { GhostButton } from "../ui/buttons";
 import { DeleteMealModal } from "./delete-modal";
 import { MealModal } from "./meal-modals";
@@ -43,13 +43,13 @@ export default function MealCardActions({ meal }: { meal: Meal }) {
     setIsEditModalOpen(false);
   };
 
-  const editMealData = {
-    foodName: meal.food_name,
-    foodRating: meal.food_rating,
-    foodImage: meal.food_image,
+  const editMealData: MealFormData = {
+    name: meal.food_name,
+    rating: meal.food_rating,
+    avatar: meal.food_image,
     restaurantName: meal.restaurant_name ?? "",
-    restaurantLogo: meal.restaurant_image ?? "",
-    restaurantStatus: meal.restaurant_status ?? "",
+    logo: meal.restaurant_image ?? "",
+    open: meal.open,
   };
   return (
     <>

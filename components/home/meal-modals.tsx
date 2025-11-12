@@ -2,22 +2,16 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { MealFormData } from "@/lib/types";
 import Button from "../ui/buttons";
 
 type MealModalProps = {
   type: "add" | "edit";
   isOpen: boolean;
   onClose: () => void;
-  initialData?: {
-    foodName: string;
-    foodRating: number;
-    foodImage: string;
-    restaurantName: string;
-    restaurantLogo: string;
-    restaurantStatus: string;
-  };
-  onSubmit: (data: unknown) => void;
+  initialData?: MealFormData;
+  onSubmit: (data: MealFormData) => void;
 };
 
 export function MealModal({
@@ -27,14 +21,14 @@ export function MealModal({
   initialData,
   onSubmit,
 }: MealModalProps) {
-  const [formData, setFormData] = useState(
+  const [formData, setFormData] = useState<MealFormData>(
     initialData || {
-      foodName: "",
-      foodRating: 0,
-      foodImage: "",
+      name: "",
+      rating: 0,
+      avatar: "",
       restaurantName: "",
-      restaurantLogo: "",
-      restaurantStatus: "open",
+      logo: "",
+      open: true,
     }
   );
 
@@ -44,7 +38,19 @@ export function MealModal({
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => {
+      let parsedValue: string | number | boolean = value;
+      if (name === "rating") {
+        parsedValue = Number(value);
+      } else if (name === "open") {
+        parsedValue = value === "true";
+      }
+      return {
+        ...prev,
+        [name]: parsedValue,
+      };
+    });
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
@@ -53,8 +59,11 @@ export function MealModal({
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    if (!formData.foodName.trim()) {
-      newErrors.foodName = "Food name is required";
+    if (!formData.name.trim()) {
+      newErrors.name = "Food name is required";
+    }
+    if (formData.rating < 0 || formData.rating > 5) {
+      newErrors.rating = "Rating must be between 0 and 5";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -66,6 +75,11 @@ export function MealModal({
       onSubmit(formData);
     }
   };
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [onClose]);
 
   if (!isOpen) return null;
 
@@ -87,20 +101,21 @@ export function MealModal({
           <div>
             <label
               className="text-gray-400 text-xs uppercase tracking-wide"
-              htmlFor="foodName"
+              htmlFor="name"
             >
               Food name
             </label>
             <input
               className="mt-1 w-full rounded border-0 bg-gray-100 px-3 py-2 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-              name="foodName"
+              id="name"
+              name="name"
               onChange={handleChange}
               placeholder="Enter food name"
               type="text"
-              value={formData.foodName}
+              value={formData.name}
             />
-            {errors.foodName && (
-              <p className="mt-1 text-red-500 text-xs">{errors.foodName}</p>
+            {errors.name && (
+              <p className="mt-1 text-red-500 text-xs">{errors.name}</p>
             )}
           </div>
 
@@ -108,17 +123,21 @@ export function MealModal({
           <div>
             <label
               className="text-gray-400 text-xs uppercase tracking-wide"
-              htmlFor="foodRating"
+              htmlFor="rating"
             >
               Food rating
             </label>
             <input
               className="mt-1 w-full rounded border-0 bg-gray-100 px-3 py-2 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-              name="foodRating"
+              id="rating"
+              max={5}
+              min={1}
+              name="rating"
               onChange={handleChange}
-              placeholder="Enter rating"
+              placeholder="Enter rating (1-5)"
+              step={0.1}
               type="number"
-              value={formData.foodRating}
+              value={formData.rating}
             />
           </div>
 
@@ -126,17 +145,18 @@ export function MealModal({
           <div>
             <label
               className="text-gray-400 text-xs uppercase tracking-wide"
-              htmlFor="foodImage"
+              htmlFor="avatar"
             >
               Food image (link)
             </label>
             <input
               className="mt-1 w-full rounded border-0 bg-gray-100 px-3 py-2 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-              name="foodImage"
+              id="avatar"
+              name="avatar"
               onChange={handleChange}
               placeholder="Enter image URL"
               type="url"
-              value={formData.foodImage}
+              value={formData.avatar}
             />
           </div>
 
@@ -150,6 +170,7 @@ export function MealModal({
             </label>
             <input
               className="mt-1 w-full rounded border-0 bg-gray-100 px-3 py-2 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+              id="restaurantName"
               name="restaurantName"
               onChange={handleChange}
               placeholder="Enter restaurant name"
@@ -162,17 +183,18 @@ export function MealModal({
           <div>
             <label
               className="text-gray-400 text-xs uppercase tracking-wide"
-              htmlFor="restaurantLogo"
+              htmlFor="logo"
             >
               Restaurant logo (link)
             </label>
             <input
               className="mt-1 w-full rounded border-0 bg-gray-100 px-3 py-2 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-              name="restaurantLogo"
+              id="logo"
+              name="logo"
               onChange={handleChange}
               placeholder="Enter logo URL"
               type="url"
-              value={formData.restaurantLogo}
+              value={formData.logo}
             />
           </div>
 
@@ -180,25 +202,33 @@ export function MealModal({
           <div>
             <label
               className="text-gray-400 text-xs uppercase tracking-wide"
-              htmlFor="restaurantStatus"
+              htmlFor="open"
             >
               Restaurant status (open/close)
             </label>
             <select
               className="mt-1 w-full rounded border-0 bg-gray-100 px-3 py-2 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-              name="restaurantStatus"
+              id="open"
+              name="open"
               onChange={handleChange}
-              value={formData.restaurantStatus}
+              value={String(formData.open)}
             >
-              <option value="open">Open</option>
-              <option value="closed">Closed</option>
+              <option value="true">Open</option>
+              <option value="false">Closed</option>
             </select>
           </div>
 
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
-            <Button className="flex-1 py-2">{submitButtonText}</Button>
-            <Button className="flex-1 py-2" onClick={onClose} variant="outline">
+            <Button className="flex-1 py-2" type="submit">
+              {submitButtonText}
+            </Button>
+            <Button
+              className="flex-1 py-2"
+              onClick={onClose}
+              type="button"
+              variant="outline"
+            >
               Cancel
             </Button>
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import type React from "react";
+import { useEffect } from "react";
 import Button from "../ui/buttons";
 
 type MealModalProps = {
@@ -19,6 +20,11 @@ MealModalProps) {
     e.preventDefault();
   };
 
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [onClose]);
   if (!isOpen) return null;
 
   return (
