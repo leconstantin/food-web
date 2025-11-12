@@ -11,7 +11,7 @@ type MealModalProps = {
   onClose: () => void;
   initialData?: {
     foodName: string;
-    foodRating: string;
+    foodRating: number;
     foodImage: string;
     restaurantName: string;
     restaurantLogo: string;
@@ -30,7 +30,7 @@ export function MealModal({
   const [formData, setFormData] = useState(
     initialData || {
       foodName: "",
-      foodRating: "",
+      foodRating: 0,
       foodImage: "",
       restaurantName: "",
       restaurantLogo: "",
@@ -117,7 +117,7 @@ export function MealModal({
               name="foodRating"
               onChange={handleChange}
               placeholder="Enter rating"
-              type="text"
+              type="number"
               value={formData.foodRating}
             />
           </div>
