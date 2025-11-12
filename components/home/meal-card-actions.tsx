@@ -44,12 +44,12 @@ export default function MealCardActions({ meal }: { meal: Meal }) {
   };
 
   const editMealData: MealFormData = {
-    name: meal.food_name,
-    rating: meal.food_rating,
-    avatar: meal.food_image,
-    restaurantName: meal.restaurant_name ?? "",
-    logo: meal.restaurant_image ?? "",
-    open: meal.open,
+    food_name: meal.food_name,
+    food_rating: meal.food_rating,
+    food_image: meal.food_image,
+    restaurant_name: meal.restaurant_name ?? "",
+    restaurant_logo: meal.restaurant_image ?? "",
+    restaurant_status: meal.open,
   };
   return (
     <>

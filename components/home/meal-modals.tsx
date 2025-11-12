@@ -1,7 +1,7 @@
 "use client";
 
+import { Loader2Icon } from "lucide-react";
 import type React from "react";
-
 import { useEffect, useState } from "react";
 import type { MealFormData } from "@/lib/types";
 import Button from "../ui/buttons";
@@ -21,14 +21,15 @@ export function MealModal({
   initialData,
   onSubmit,
 }: MealModalProps) {
+  const [isSubmittimg, setIsSubmittimg] = useState(false);
   const [formData, setFormData] = useState<MealFormData>(
     initialData || {
-      name: "",
-      rating: 0,
-      avatar: "",
-      restaurantName: "",
-      logo: "",
-      open: true,
+      food_name: "",
+      food_rating: 0,
+      food_image: "",
+      restaurant_name: "",
+      restaurant_logo: "",
+      restaurant_status: true,
     }
   );
 
@@ -41,9 +42,9 @@ export function MealModal({
 
     setFormData((prev) => {
       let parsedValue: string | number | boolean = value;
-      if (name === "rating") {
+      if (name === "food_rating") {
         parsedValue = Number(value);
-      } else if (name === "open") {
+      } else if (name === "Open Now") {
         parsedValue = value === "true";
       }
       return {
@@ -59,20 +60,39 @@ export function MealModal({
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    if (!formData.name.trim()) {
-      newErrors.name = "Food name is required";
+    if (!formData.food_name.trim()) {
+      newErrors.food_name = "Required field is empty";
     }
-    if (formData.rating < 0 || formData.rating > 5) {
-      newErrors.rating = "Rating must be between 0 and 5";
+    if (formData.food_rating < 0 || formData.food_rating > 5) {
+      newErrors.food_rating = "Rating is outside 1-5 range";
+    }
+    if (!formData.restaurant_logo.startsWith("https")) {
+      newErrors.restaurant_logo = "Image URL is invalid";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      onSubmit(formData);
+    setIsSubmittimg(true);
+    try {
+      e.preventDefault();
+      if (validateForm()) {
+        onSubmit(formData);
+        setFormData({
+          food_name: "",
+          food_rating: 0,
+          food_image: "",
+          restaurant_name: "",
+          restaurant_logo: "",
+          restaurant_status: true,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      setIsSubmittimg(false);
+    } finally {
+      setIsSubmittimg(false);
     }
   };
   useEffect(() => {
@@ -86,6 +106,7 @@ export function MealModal({
   const isAddMode = type === "add";
   const title = isAddMode ? "Add a meal" : "Edit Meal";
   const submitButtonText = isAddMode ? "Add" : "Save";
+  const submittingText = isAddMode ? "Adding Food..." : "Updating Food...";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -101,21 +122,27 @@ export function MealModal({
           <div>
             <label
               className="text-gray-400 text-xs uppercase tracking-wide"
-              htmlFor="name"
+              htmlFor="food_name"
             >
               Food name
             </label>
             <input
               className="mt-1 w-full rounded border-0 bg-gray-100 px-3 py-2 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-              id="name"
-              name="name"
+              id="food_name"
+              name="food_name"
               onChange={handleChange}
               placeholder="Enter food name"
+              required
               type="text"
-              value={formData.name}
+              value={formData.food_name}
             />
             {errors.name && (
-              <p className="mt-1 text-red-500 text-xs">{errors.name}</p>
+              <p
+                className="mt-1 text-red-500 text-xs"
+                id="restaurant_name-error"
+              >
+                {errors.name}
+              </p>
             )}
           </div>
 
@@ -123,40 +150,50 @@ export function MealModal({
           <div>
             <label
               className="text-gray-400 text-xs uppercase tracking-wide"
-              htmlFor="rating"
+              htmlFor="food_rating"
             >
               Food rating
             </label>
             <input
               className="mt-1 w-full rounded border-0 bg-gray-100 px-3 py-2 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-              id="rating"
+              id="food_rating"
               max={5}
               min={1}
-              name="rating"
+              name="food_rating"
               onChange={handleChange}
-              placeholder="Enter rating (1-5)"
+              placeholder="Food rating (1-5)"
+              required
               step={0.1}
               type="number"
-              value={formData.rating}
+              value={formData.food_rating}
             />
+            {errors.food_rating && (
+              <p
+                className="mt-1 text-red-500 text-xs"
+                id="restaurant_rating-error"
+              >
+                {errors.food_rating}
+              </p>
+            )}
           </div>
 
           {/* Food Image URL */}
           <div>
             <label
               className="text-gray-400 text-xs uppercase tracking-wide"
-              htmlFor="avatar"
+              htmlFor="food_image"
             >
               Food image (link)
             </label>
             <input
               className="mt-1 w-full rounded border-0 bg-gray-100 px-3 py-2 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-              id="avatar"
-              name="avatar"
+              id="food_image"
+              name="food_image"
               onChange={handleChange}
-              placeholder="Enter image URL"
+              placeholder="Food image (link)"
+              required
               type="url"
-              value={formData.avatar}
+              value={formData.food_image}
             />
           </div>
 
@@ -164,18 +201,19 @@ export function MealModal({
           <div>
             <label
               className="text-gray-400 text-xs uppercase tracking-wide"
-              htmlFor="restaurantName"
+              htmlFor="restaurant_name"
             >
               Restaurant name
             </label>
             <input
               className="mt-1 w-full rounded border-0 bg-gray-100 px-3 py-2 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-              id="restaurantName"
-              name="restaurantName"
+              id="restaurant_name"
+              name="restaurant_name"
               onChange={handleChange}
-              placeholder="Enter restaurant name"
+              placeholder="Restaurant name"
+              required
               type="text"
-              value={formData.restaurantName}
+              value={formData.restaurant_name}
             />
           </div>
 
@@ -183,48 +221,65 @@ export function MealModal({
           <div>
             <label
               className="text-gray-400 text-xs uppercase tracking-wide"
-              htmlFor="logo"
+              htmlFor="restaurant_logo"
             >
               Restaurant logo (link)
             </label>
             <input
               className="mt-1 w-full rounded border-0 bg-gray-100 px-3 py-2 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-              id="logo"
-              name="logo"
+              id="restaurant_logo"
+              name="restaurant_logo"
               onChange={handleChange}
-              placeholder="Enter logo URL"
+              placeholder="Restaurant logo (link)"
+              required
               type="url"
-              value={formData.logo}
+              value={formData.restaurant_logo}
             />
+            {errors.restaurant_logo && (
+              <p
+                className="mt-1 text-red-500 text-xs"
+                id="restaurant_image-error"
+              >
+                {errors.restaurant_logo}
+              </p>
+            )}
           </div>
 
           {/* Restaurant Status */}
           <div>
             <label
               className="text-gray-400 text-xs uppercase tracking-wide"
-              htmlFor="open"
+              htmlFor="restaurant_status"
             >
               Restaurant status (open/close)
             </label>
             <select
               className="mt-1 w-full rounded border-0 bg-gray-100 px-3 py-2 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-              id="open"
-              name="open"
+              id="restaurant_status"
+              name="restaurant_status"
               onChange={handleChange}
-              value={String(formData.open)}
+              value={String(formData.restaurant_status)}
             >
-              <option value="true">Open</option>
+              <option defaultChecked value="true">
+                Open Now
+              </option>
               <option value="false">Closed</option>
             </select>
           </div>
 
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
-            <Button className="flex-1 py-2" type="submit">
-              {submitButtonText}
+            <Button
+              className="flex-1 py-2"
+              disabled={isSubmittimg}
+              type="submit"
+            >
+              {isSubmittimg && <Loader2Icon className="animate-spin" />}
+              {isSubmittimg ? submittingText : submitButtonText}
             </Button>
             <Button
               className="flex-1 py-2"
+              disabled={isSubmittimg}
               onClick={onClose}
               type="button"
               variant="outline"

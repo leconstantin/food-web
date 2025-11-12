@@ -17,10 +17,10 @@ export type Meal = {
 };
 
 export type MealFormData = {
-  name: string;
-  rating: number;
-  avatar: string;
-  restaurantName: string;
-  logo: string;
-  open: boolean;
+  food_name: string;
+  food_rating: number;
+  food_image: string;
+  restaurant_name: string;
+  restaurant_logo: string;
+  restaurant_status: boolean;
 };
