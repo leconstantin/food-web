@@ -55,7 +55,7 @@ export function GhostButton({ children, className, ...props }: ButtonProps) {
   return (
     <button
       className={cn(
-        "w-full cursor-pointer px-4 py-2 text-left font-semibold text-black transition-colors hover:bg-orange-50",
+        "flex w-full cursor-pointer items-center gap-1 px-4 py-2 text-left font-semibold text-black transition-colors hover:bg-orange-50",
         className
       )}
       type="button"

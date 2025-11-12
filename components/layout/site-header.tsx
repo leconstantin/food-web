@@ -6,7 +6,7 @@ import AddMeal from "./add-meal";
 export default function SiteHeader() {
   return (
     <header className="mx-auto flex min-h-16 w-full max-w-5xl items-center font-sans">
-      <div className="flex w-full items-center justify-between">
+      <div className="container flex w-full items-center justify-between">
         <div className="flex items-center gap-1">
           <Image alt="icon" height={16} src={icon} width={16} />
           <Image alt="icon" height={16} src={iconLogo} width={100} />

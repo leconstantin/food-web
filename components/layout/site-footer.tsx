@@ -31,10 +31,10 @@ export function SiteFooter() {
   return (
     <footer className="bg-[#212121] text-white">
       {/* Main Footer */}
-      <div className="mx-auto max-w-5xl py-16">
+      <div className="container mx-auto max-w-5xl py-16">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
           {/* Dynamic Footer Sections */}
-          <div className="col-span-6 grid grid-cols-3">
+          <div className="col-span-12 grid grid-cols-1 lg:col-span-6 lg:grid-cols-3">
             {footerLinks.map(({ title, links }) => (
               <div key={title}>
                 <h3 className="mb-6 font-bold text-sm text-white">{title}</h3>
@@ -56,7 +56,7 @@ export function SiteFooter() {
           <div />
 
           {/* Newsletter + Socials */}
-          <div className="col-span-4">
+          <div className="col-span-12 lg:col-span-4">
             <h3 className="mb-4 font-bold text-[#F5F5F5] text-sm">Follow Us</h3>
             <div className="mb-8 flex gap-4">
               {socialLinks.map(({ name, icon: Icon, href }) => (
@@ -74,7 +74,7 @@ export function SiteFooter() {
             <h3 className="mb-4 font-bold text-[#F5F5F5] text-sm">
               Receive exclusive offers in your mailbox
             </h3>
-            <form className="flex gap-2">
+            <form className="flex w-fit gap-2">
               <div className="flex flex-1 items-center gap-2 rounded-lg bg-[#424242] py-2 pr-2 pl-4">
                 <MailIcon className="size-4 text-[#F5F5F5]" />
                 <input
@@ -98,7 +98,14 @@ export function SiteFooter() {
           </p>
           <div className="flex items-center gap-1 text-gray-400 text-sm">
             Made with <Heart className="fill-red-500 text-red-500" size={16} />{" "}
-            by Leo Constantin
+            by
+            <a
+              href="https://founder.rathon-rw.com/"
+              rel="noopener"
+              target="_blank"
+            >
+              Leo Constantin
+            </a>
           </div>
         </div>
       </div>
