@@ -6,7 +6,7 @@ import { HeroCard } from "./hero-card";
 export default function Hero() {
   return (
     <section className="relative bg-[#FFB30E]">
-      <div className="container relative mx-auto flex min-h-[calc(100vh-220px)] max-w-5xl flex-col justify-center pt-16 lg:pt-0">
+      <div className="container relative mx-auto flex min-h-[calc(100vh-220px)] max-w-6xl flex-col justify-center pt-16 lg:pt-0">
         {/* texts */}
         <div className="flex flex-col gap-1.5 text-white">
           <h1 className="font-bold text-3xl lg:text-6xl">Are you starving?</h1>

@@ -32,7 +32,7 @@ export function SiteFooter() {
   return (
     <footer className="bg-[#212121] text-white">
       {/* Main Footer */}
-      <div className="container mx-auto max-w-5xl py-16">
+      <div className="container mx-auto max-w-6xl py-16">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
           {/* Dynamic Footer Sections */}
           <div className="col-span-12 grid grid-cols-1 lg:col-span-6 lg:grid-cols-3">
